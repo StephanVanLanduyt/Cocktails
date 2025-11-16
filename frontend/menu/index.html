@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cocktail Menu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div class="menu-container">
+        <h1>🍹 Cocktail Menu 🍸</h1>
+        
+        <button id="favorites-toggle-btn" class="icon-toggle-btn">
+            ❤️
+            <span id="favorites-count" class="count-badge">0</span>
+        </button>
+
+        <div id="loader-spinner" class="spinner-container">
+            <div class="spinner"></div>
+            <p>Loading cocktails from the API... Please wait. 🍸</p>
+        </div>
+
+        <div id="cocktail-output" style="display: none;">
+            
+            <div id="category-buttons" class="category-bar">
+                <div id="category-wrapper">
+                </div>    
+            </div>
+            
+            <h2 id="current-category-title">Select a Category</h2>
+            
+            <div id="cocktail-menu" class="card-grid">
+            </div>
+        </div>
+    </div>
+
+    <div id="favorites-drawer" class="favorites-drawer">
+        <div class="drawer-header">
+            <h2>❤️ Your Favorites</h2>
+            <button id="close-drawer-btn" class="icon-toggle-btn">
+                ✕
+            </button>
+        </div>
+        <div id="favorites-menu" class="card-list-vertical">
+            <p>Your favorite cocktails will appear here once you select them!</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

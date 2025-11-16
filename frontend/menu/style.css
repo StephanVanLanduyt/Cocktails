@@ -1,0 +1,343 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #4a382d;
+    color: #ede8df;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+
+/* Spinner Container Styling */
+.spinner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100px; /* Adjust height as needed */
+    margin-top: 50px;
+}
+
+/* The CSS Spinning Loader */
+.spinner {
+    border: 5px solid #f3f3f3; /* Light grey */
+    border-top: 5px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite; /* Apply the animation */
+    margin-bottom: 10px;
+}
+
+/* The Spinning Animation */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Styling for error messages */
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
+.menu-container {
+    text-align: center;
+    max-width: 1200px;
+    width: 100%;
+}
+
+h1 {
+    color: #964f43; /* Sienna color for a warm feel */
+    margin-bottom: 20px;
+}
+
+/* Category Styling */
+#current-category-title {
+    color: #ede8df;
+    margin: 30px 0 20px 0;
+    font-size: 1.8em;
+    min-height: 1.8em; /* To prevent layout jump before a title is set */
+}
+
+.category-bar {
+    padding-left: 10px; 
+    padding-right: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 5px; /* Add slight padding for the scrollbar visually */
+    /* Key properties for horizontal scroll */
+    display: block;
+    overflow-x: auto; /* Enables horizontal scroll when content overflows */
+    /* Optional: Style the scrollbar (for WebKit browsers like Chrome/Safari) */
+    -webkit-overflow-scrolling: touch; /* Improves scrolling on iOS devices */
+}
+
+/* Optional: Hide the scrollbar but keep the functionality */
+/* For Webkit browsers (Chrome, Safari) */
+.category-bar::-webkit-scrollbar {
+    height: 8px; /* Height of the horizontal scrollbar */
+}
+
+.category-bar::-webkit-scrollbar-thumb {
+    background-color: #d2b48c; /* Tan/sand color for the thumb */
+    border-radius: 4px;
+}
+
+/* Inner Wrapper */
+#category-wrapper {
+    /* The wrapper is also a flex container */
+    display: flex;
+    gap: 15px;
+    /* Prevents buttons from wrapping and allows them to take up natural space */
+    white-space: nowrap; 
+    margin-left: auto;
+    margin-right: auto;
+    
+    /* Prevents the wrapper from growing beyond its needed content size */
+    width: fit-content; 
+    
+    /* Ensures the wrapper never shrinks smaller than its content */
+    min-width: 100%;
+}
+
+.category-button {
+    flex-shrink: 0; /* Prevents buttons from shrinking smaller than their content allows */
+    background-color: #e0d0b7;
+    color: #964f43;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+.category-button:hover {
+    background-color: #c9bda5;
+}
+
+.category-button.active {
+    background-color: #964f43; /* Darker when active */
+    color: white;
+}
+
+/* --- Card Styles --- */
+.card-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.cocktail-card {
+    width: 250px;
+    height: 250px; 
+    perspective: 1000px; 
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    border-radius: 15px; 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.cocktail-card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0; 
+    left: 0; 
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-front {
+    background-color: #fffaf0;
+    color: #964f43;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.card-back {
+    background-color: #964f43;
+    color: white;
+    transform: rotateY(180deg);
+    text-align: left;
+    padding-top: 10px;
+    justify-content: center; /* Align content to the top */
+}
+
+.card-back h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.card-back ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+    font-size: 1em;
+}
+
+.card-back li {
+    margin-bottom: 5px;
+}
+
+/* --- Favorite Button Positioning and Style --- */
+.favorite-btn {
+    position: absolute; 
+    bottom: 10px;      
+    right: 10px;       
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    padding: 5px;
+    z-index: 10; 
+    transition: transform 0.1s;
+}
+
+.favorite-btn:hover {
+    transform: scale(1.1);
+}
+
+/* --- Favorites Drawer/Sidebar Styles (UPDATED) --- */
+.favorites-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 350px; /* Fixed width for the drawer */
+    max-width: 90%; /* Max width on smaller screens */
+    height: 100%;
+    background-color: #2e1d15; /* Darker background for contrast */
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+    transform: translateX(100%); /* Initially hidden off-screen */
+    transition: transform 0.4s ease-out;
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 1000; /* Ensure it is above all other content */
+    overflow-y: auto;
+}
+
+.favorites-drawer.open {
+    transform: translateX(0); /* Slide into view */
+}
+
+.drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ffcc00;
+    margin-bottom: 20px;
+}
+
+.drawer-header h2 {
+    color: #ffcc00;
+    margin: 0;
+}
+
+/* Style for the vertical card list inside the drawer */
+.card-list-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Adjust card size for the drawer to fit better and enable flipping */
+.favorites-drawer .cocktail-card {
+    width: 100%; /* Full width of the drawer */
+    height: 150px; /* Smaller height for favorites */
+    margin: 0 auto;
+}
+
+.favorites-drawer .cocktail-card .card-face {
+    justify-content: space-around; /* Distribute content nicely */
+    font-size: 1.2em;
+    text-transform: capitalize;
+    padding: 15px;
+}
+
+/* Hide the card back entirely in the favorites drawer */
+.favorites-drawer .cocktail-card .card-inner {
+    transform: none !important; /* Override flipped state */
+}
+.favorites-drawer .cocktail-card .card-back {
+    display: none; 
+}
+.favorites-drawer .cocktail-card .card-front {
+    transform: none;
+}
+
+/* --- Toggle Button in Top Right Corner --- */
+.icon-toggle-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #964f43;
+    color: white;
+    border: 2px solid #ffcc00;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5em;
+    cursor: pointer;
+    z-index: 1001; /* Above the drawer when closed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.1s;
+    line-height: 1; /* Center the emoji vertically */
+}
+
+#close-drawer-btn {
+    /* Styles for the close button inside the drawer */
+    position: static; 
+    width: 30px;
+    height: 30px;
+    font-size: 1.2em;
+    background-color: #4a382d;
+    border-color: white;
+    color: white;
+    line-height: 1.5;
+}
+
+.icon-toggle-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Badge for the count */
+.count-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #ff0000;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.7em;
+    font-weight: bold;
+    line-height: 1;
+}

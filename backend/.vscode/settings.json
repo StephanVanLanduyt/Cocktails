@@ -1,0 +1,11 @@
+{
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "editor.formatOnSave": true,
+    "python.formatting.provider": "black",
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+    },
+    "terminal.integrated.rightClickBehavior": "default",
+}

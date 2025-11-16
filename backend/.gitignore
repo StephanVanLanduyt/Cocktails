@@ -1,0 +1,18 @@
+# dist file
+dist/
+
+# virtual environment
+.venv/
+
+# Python 
+__pycache__/
+
+# pyenv
+.python-version
+
+# VisualStudioCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json

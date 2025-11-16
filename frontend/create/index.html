@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cocktail Recipe Creator</title>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>🍹 New Drink Submission</h2>
+    
+    <label for="drinkName">Drink Name:</label>
+    <input type="text" id="drinkName" required>
+
+    <br>
+
+    <h3>Recipe Measures</h3>
+    <div id="measuresContainer">
+        </div>
+    <button type="button" id="addMeasure" class="add-btn">+</button>
+
+    <br>
+    
+    <h3>Garnishes</h3>
+    <div id="garnishesContainer">
+        </div>
+    <button type="button" id="addGarnish" class="add-btn">+</button>
+
+    <br>
+    
+    <h3>Method</h3>
+    <textarea id="methodInput" class="form-field" rows="4" placeholder="Describe the preparation steps (e.g., 'Shake all ingredients with ice and strain into a chilled coupe glass.')." required></textarea>
+    
+    <br>
+
+    <h3>Categories</h3>
+    <div id="categoriesContainer">
+        </div>
+    <button type="button" id="addCategory" class="add-btn">+</button>
+
+    <button type="button" id="submitData" class="submit-btn">Submit Data</button>
+
+    <h3>API Response:</h3>
+    <pre class="result api-response" id="apiResponse">Ready to submit.</pre>
+    <h3>Generated JSON Payload:</h3>
+    <pre class="result" id="jsonOutput"></pre>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>
