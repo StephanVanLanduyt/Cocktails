@@ -4,6 +4,7 @@ from cocktails.api.cocktails import CocktailService
 from cocktails.db.model.cocktails import Category as CategoryModel
 from cocktails.db.model.cocktails import Cocktail as CocktailModel
 from cocktails.db.model.cocktails import Garnish as GarnishModel
+from cocktails.db.model.cocktails import Glass as GlassModel
 from cocktails.db.model.cocktails import Ingredient as IngredientModel
 from cocktails.db.model.cocktails import Measure as MeasureModel
 from cocktails.db.model.cocktails import \
@@ -16,11 +17,13 @@ from cocktails.db.repositories.cocktails import (CocktailModelFactory,
                                                  CocktailRepositoryAdapter,
                                                  SQLCocktailRepository)
 from cocktails.db.repositories.garnishes import SQLGarnishRepository
+from cocktails.db.repositories.glasses import SQLGlassRepository
 from cocktails.db.repositories.ingredients import SQLIngredientRepository
 from cocktails.db.repositories.recipes import (RecipeModelFactory,
                                                SQLRecipeRepository)
 from cocktails.schemas.cocktails import Category as CategorySchema
 from cocktails.schemas.cocktails import Cocktail as CocktailSchema
+from cocktails.schemas.cocktails import Glass as GlassSchema
 from cocktails.schemas.cocktails import Garnish as GarnishSchema
 from cocktails.schemas.cocktails import Ingredient as IngredientSchema
 from cocktails.schemas.cocktails import Measure as MeasureSchema
@@ -37,6 +40,7 @@ def get_cocktail_service(
         CocktailSchema: CocktailModel,
         CategorySchema: CategoryModel,
         RecipeSchema: RecipeModel,
+        GlassSchema: GlassModel,
         GarnishSchema: GarnishModel,
         IngredientSchema: IngredientModel,
         MeasuredIngredientSchema: MeasuredIngredientModel,
@@ -50,6 +54,9 @@ def get_cocktail_service(
                     RecipeModelFactory(mapping),
                     SQLIngredientRepository(
                         ModelFactory[IngredientModel, IngredientSchema](mapping)
+                    ),
+                    SQLGlassRepository(
+                        ModelFactory[GlassModel, GlassSchema](mapping)
                     ),
                     SQLGarnishRepository(
                         ModelFactory[GarnishModel, GarnishSchema](mapping)

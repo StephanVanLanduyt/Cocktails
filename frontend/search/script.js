@@ -77,6 +77,9 @@ function renderRecipeCard(data, multiplier = 1, isFlipped = false) {
         return `<li>${garnish.name}</li>`;
     }).join('');
 
+    // Create glass for the card back
+    const glass = recipeDetails.glass.name;
+
     // Extract the method (assuming it's a string property directly on recipeDetails)
     const methodText = recipeDetails.method || 'No specific method provided.'; // Use a fallback
 
@@ -94,8 +97,11 @@ function renderRecipeCard(data, multiplier = 1, isFlipped = false) {
                     
                     <h4>Ingredients</h4>
                     <ul>
-                        ${ingredientsList}
+                    ${ingredientsList}
                     </ul>
+
+                    <h4 style="margin-top: 10px;">Glass</h4>
+                    <p class="recipe-glass">${glass}</p>
                     
                     ${garnishesList ? `
                         <h4 style="margin-top: 10px;">Garnish</h4>

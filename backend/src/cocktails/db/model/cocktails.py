@@ -119,6 +119,20 @@ class MeasuredIngredient(Base):
         return composite(Measure, cls.quantity_amount, cls.quantity_unit)
 
 
+class Glass(Base):
+    __tablename__ = "glass"
+    __table_args__ = (
+        Index(
+            "uix_glass_name",
+            "name",
+            unique=True,
+        ),
+        {"schema": SCHEMA},
+    )
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column()
+
+
 class Garnish(Base):
     __tablename__ = "garnish"
     __table_args__ = (
@@ -216,6 +230,8 @@ class Recipe(Base):
         overlaps="ingredients",
         # back_populates="recipe"
     )
+    glass_id: Mapped[int] = mapped_column(ForeignKey(f"{SCHEMA}.glass.id"))
+    glass: Mapped[Glass] = relationship()
     garnishes: Mapped[list[Garnish]] = relationship(
         lazy="selectin",
         secondary=recipe_garnish_association_t,
@@ -223,4 +239,4 @@ class Recipe(Base):
         secondaryjoin=lambda: Garnish.id == recipe_garnish_association_t.c.garnish_id,
         uselist=True,
     )
-    method: Mapped[str] = mapped_column(server_default="Stir with Ice and Strain.")
+    method: Mapped[str] = mapped_column()

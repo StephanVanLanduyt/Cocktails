@@ -4,9 +4,14 @@ from decimal import Decimal
 from pydantic import BaseModel
 
 from cocktails.core.garnishes import Garnish as GarnishName
+from cocktails.core.glasses import Glass as GlassName
 from cocktails.core.ingredients import Ingredient as IngredientName
 from cocktails.core.units import Unit
 from cocktails.schemas.base import ItemDB
+
+
+class Glass(ItemDB):
+    name: GlassName
 
 
 class Garnish(ItemDB):
@@ -35,6 +40,7 @@ class MeasuredIngredient(BaseModel):
 
 class Recipe(ItemDB):
     measures: list[MeasuredIngredient]
+    glass: Glass
     garnishes: list[Garnish]
     method: str
     ingredients: list[Ingredient] | None

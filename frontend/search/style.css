@@ -209,15 +209,19 @@ h1 {
 }
 /* ----------------------------------------------------------- */
 
-/* --- NEW STYLE: for the Recipe Method text --- */
+.card-back .recipe-glass {
+    margin: 0;
+    padding: 0 5px; /* Add slight horizontal padding */
+    font-size: 0.9em;
+    text-align: center;
+}
+
 .card-back .recipe-method {
     margin: 0;
     padding: 0 5px; /* Add slight horizontal padding */
     font-size: 0.9em;
     text-align: center;
-    font-style: italic;
 }
-/* ------------------------------------------- */
 
 .card-back ul {
     list-style-type: none;
