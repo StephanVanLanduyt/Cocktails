@@ -27,8 +27,6 @@ class SQLGlassRepository(SQLRepository[GlassModel, GlassSchema]):
 
 
 class GlassRepositoryAdapter(RepositoryAdapter[GlassModel, GlassSchema]):
-    def create_if_not_exist(
-        self, session: RepositorySession, item: GlassSchema
-    ) -> int:
+    def create_if_not_exist(self, session: RepositorySession, item: GlassSchema) -> int:
         db_obj = self._repository.create_if_not_exist(session, item)
         return db_obj.id

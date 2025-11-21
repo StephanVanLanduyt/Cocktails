@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Cocktail Suggestion</title>
+    
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body class="random-cocktail-body">
+
+<div class="menu-container">
+    <h1>Cocktail Roulette</h1>
+    <h2>Click below to discover your next drink!</h2>
+
+    <button type="button" id="randomCocktailBtn" class="large-rounded-btn">
+        I'm Feeling Lucky!
+    </button>
+    
+    <div id="loader-spinner" class="spinner-container" style="display: none;">
+        <div class="spinner"></div>
+        <p>Shaking up a cocktail suggestion...</p>
+    </div>
+
+    <div id="cocktail-display" class="card-grid" style="display: none;">
+        </div>
+    
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

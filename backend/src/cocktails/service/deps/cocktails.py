@@ -23,8 +23,8 @@ from cocktails.db.repositories.recipes import (RecipeModelFactory,
                                                SQLRecipeRepository)
 from cocktails.schemas.cocktails import Category as CategorySchema
 from cocktails.schemas.cocktails import Cocktail as CocktailSchema
-from cocktails.schemas.cocktails import Glass as GlassSchema
 from cocktails.schemas.cocktails import Garnish as GarnishSchema
+from cocktails.schemas.cocktails import Glass as GlassSchema
 from cocktails.schemas.cocktails import Ingredient as IngredientSchema
 from cocktails.schemas.cocktails import Measure as MeasureSchema
 from cocktails.schemas.cocktails import \
@@ -55,9 +55,7 @@ def get_cocktail_service(
                     SQLIngredientRepository(
                         ModelFactory[IngredientModel, IngredientSchema](mapping)
                     ),
-                    SQLGlassRepository(
-                        ModelFactory[GlassModel, GlassSchema](mapping)
-                    ),
+                    SQLGlassRepository(ModelFactory[GlassModel, GlassSchema](mapping)),
                     SQLGarnishRepository(
                         ModelFactory[GarnishModel, GarnishSchema](mapping)
                     ),

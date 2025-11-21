@@ -36,6 +36,10 @@ class SQLCocktailRepository(SQLRepository[CocktailModel, CocktailSchema]):
         self._recipes = recipes
         self._categories = categories
 
+    def get_random_cocktail(self, session: RepositorySession) -> CocktailModel:
+        stmt = select(CocktailModel).order_by(func.random()).limit(1)
+        return self._execute_get_statement(session, stmt, unique=True)
+
     def get_multi_available(
         self, session: RepositorySession, skip: int, limit: int
     ) -> list[CocktailModel]:
@@ -122,6 +126,10 @@ class SQLCocktailRepository(SQLRepository[CocktailModel, CocktailSchema]):
 
 
 class CocktailRepositoryAdapter(RepositoryAdapter[CocktailModel, CocktailSchema]):
+    def get_random_cocktail(self, session: RepositorySession) -> CocktailSchema:
+        orm_obj = self._repository.get_random_cocktail(session)
+        return self._from_orm(orm_obj)
+
     def get_multi_available(
         self, session: RepositorySession, skip: int, limit: int
     ) -> list[CocktailSchema]:

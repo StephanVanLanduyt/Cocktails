@@ -20,7 +20,9 @@ logger = logging.getLogger(__name__)
 
 class RecipeModelFactory(ModelFactory[RecipeModel, RecipeSchema]):
     def make(self, item: RecipeSchema) -> RecipeModel:
-        return self._to_orm(item, exclude={"ingredients", "timestamp", "cocktail", "garnishes", "glass"})
+        return self._to_orm(
+            item, exclude={"ingredients", "timestamp", "cocktail", "garnishes", "glass"}
+        )
 
 
 class SQLRecipeRepository(SQLRepository[RecipeModel, RecipeSchema]):

@@ -22,6 +22,9 @@ class CocktailService:
     def get_multi_cocktail(self, skip: int = 0, limit: int = 100) -> list[Cocktail]:
         return self._cocktail_repository.get_multi(self._session, skip, limit)
 
+    def get_random_cocktail(self) -> Cocktail:
+        return self._cocktail_repository.get_random_cocktail(self._session)
+
     def get_multi_available_cocktail(
         self, skip: int = 0, limit: int = 100
     ) -> list[Cocktail]:

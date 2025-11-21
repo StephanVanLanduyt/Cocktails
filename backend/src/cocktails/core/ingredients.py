@@ -15,6 +15,7 @@ class Ingredient(StrEnum):
     AGED_BARBADOS_RUM = "Aged Barbados Rum"
     AGED_OVERPROOF_JAMAICAN_RUM = "Aged Overproof Jamaican Rum"
     WHITE_OVERPROOF_JAMAICAN_RUM = "White Overproof Jamaican Rum"
+    OLD_FASHIONED_TRADITIONAL_DARK_RUM = "Old Fashioned Traditional Dark Rum"
     AGED_JAMAICAN_RUM = "Aged Jamaican Rum"
     RHUM_AGRICOLE_BLANC = "Rhum Agricole Blanc"
     RHUM_AGRICOLE_AMBER = "Rhum Agricole Amber"

@@ -29,6 +29,18 @@ def get_multi_cocktail(
     return service.get_multi_cocktail(skip=skip, limit=limit)
 
 
+@router.post("/random/", response_model=Cocktail)
+def get_cocktail(
+    *, service: CocktailService = Depends(get_cocktail_service)
+) -> Cocktail:
+    try:
+        return service.get_random_cocktail()
+    except Exception as err:
+        raise HTTPException(
+            status_code=404, detail=f"No random cocktail could be found"
+        ) from err
+
+
 @router.get("/available/", response_model=list[Cocktail])
 def get_multi_available_cocktail(
     *,
