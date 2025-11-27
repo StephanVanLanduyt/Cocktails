@@ -1,6 +1,6 @@
 import logging
 
-from sqlalchemy import and_, func, not_, select
+from sqlalchemy import and_, func, not_, select, Select
 from sqlalchemy.orm import Session
 
 from cocktails.db.model.cocktails import Category as CategoryModel
@@ -36,13 +36,7 @@ class SQLCocktailRepository(SQLRepository[CocktailModel, CocktailSchema]):
         self._recipes = recipes
         self._categories = categories
 
-    def get_random_cocktail(self, session: RepositorySession) -> CocktailModel:
-        stmt = select(CocktailModel).order_by(func.random()).limit(1)
-        return self._execute_get_statement(session, stmt, unique=True)
-
-    def get_multi_available(
-        self, session: RepositorySession, skip: int, limit: int
-    ) -> list[CocktailModel]:
+    def _multi_available_query(self) -> Select[tuple[CocktailModel]]:
         subq = (
             select(
                 RecipeModel.cocktail_id.label("cocktail_id"),
@@ -66,6 +60,18 @@ class SQLCocktailRepository(SQLRepository[CocktailModel, CocktailSchema]):
                 )
             )
         )
+
+        return stmt
+
+    def get_random_cocktail(self, session: RepositorySession) -> CocktailModel:
+        stmt = self._multi_available_query()
+        stmt = stmt.order_by(func.random()).limit(1)
+        return self._execute_get_statement(session, stmt, unique=True)
+
+    def get_multi_available(
+        self, session: RepositorySession, skip: int, limit: int
+    ) -> list[CocktailModel]:
+        stmt = self._multi_available_query()
         if skip:
             stmt = stmt.offset(skip)
         if limit:
