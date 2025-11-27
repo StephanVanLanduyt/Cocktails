@@ -5,10 +5,14 @@ from pydantic import BaseModel
 
 from cocktails.core.garnishes import Garnish as GarnishName
 from cocktails.core.glasses import Glass as GlassName
+from cocktails.core.tags import Tag as TagName
 from cocktails.core.ingredients import Ingredient as IngredientName
 from cocktails.core.units import Unit
 from cocktails.schemas.base import ItemDB
 
+
+class Tag(ItemDB):
+    name: TagName
 
 class Glass(ItemDB):
     name: GlassName
@@ -42,6 +46,7 @@ class Recipe(ItemDB):
     measures: list[MeasuredIngredient]
     glass: Glass
     garnishes: list[Garnish]
+    tags: list[Tag]
     method: str
     ingredients: list[Ingredient] | None
     timestamp: datetime | None = None

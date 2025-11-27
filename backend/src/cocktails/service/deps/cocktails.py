@@ -4,6 +4,7 @@ from cocktails.api.cocktails import CocktailService
 from cocktails.db.model.cocktails import Category as CategoryModel
 from cocktails.db.model.cocktails import Cocktail as CocktailModel
 from cocktails.db.model.cocktails import Garnish as GarnishModel
+from cocktails.db.model.cocktails import Tag as TagModel
 from cocktails.db.model.cocktails import Glass as GlassModel
 from cocktails.db.model.cocktails import Ingredient as IngredientModel
 from cocktails.db.model.cocktails import Measure as MeasureModel
@@ -17,6 +18,7 @@ from cocktails.db.repositories.cocktails import (CocktailModelFactory,
                                                  CocktailRepositoryAdapter,
                                                  SQLCocktailRepository)
 from cocktails.db.repositories.garnishes import SQLGarnishRepository
+from cocktails.db.repositories.tags import SQLTagRepository
 from cocktails.db.repositories.glasses import SQLGlassRepository
 from cocktails.db.repositories.ingredients import SQLIngredientRepository
 from cocktails.db.repositories.recipes import (RecipeModelFactory,
@@ -24,6 +26,7 @@ from cocktails.db.repositories.recipes import (RecipeModelFactory,
 from cocktails.schemas.cocktails import Category as CategorySchema
 from cocktails.schemas.cocktails import Cocktail as CocktailSchema
 from cocktails.schemas.cocktails import Garnish as GarnishSchema
+from cocktails.schemas.cocktails import Tag as TagSchema
 from cocktails.schemas.cocktails import Glass as GlassSchema
 from cocktails.schemas.cocktails import Ingredient as IngredientSchema
 from cocktails.schemas.cocktails import Measure as MeasureSchema
@@ -42,6 +45,7 @@ def get_cocktail_service(
         RecipeSchema: RecipeModel,
         GlassSchema: GlassModel,
         GarnishSchema: GarnishModel,
+        TagSchema: TagModel,
         IngredientSchema: IngredientModel,
         MeasuredIngredientSchema: MeasuredIngredientModel,
     }
@@ -58,6 +62,9 @@ def get_cocktail_service(
                     SQLGlassRepository(ModelFactory[GlassModel, GlassSchema](mapping)),
                     SQLGarnishRepository(
                         ModelFactory[GarnishModel, GarnishSchema](mapping)
+                    ),
+                    SQLTagRepository(
+                        ModelFactory[TagModel, TagSchema](mapping)
                     ),
                 ),
                 SQLCategoryRepository(CategoryModelFactory(mapping)),

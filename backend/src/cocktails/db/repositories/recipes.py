@@ -11,6 +11,7 @@ from cocktails.db.model.cocktails import Recipe as RecipeModel
 from cocktails.db.repositories.base import (ModelFactory, RepositorySession,
                                             SQLRepository)
 from cocktails.db.repositories.garnishes import SQLGarnishRepository
+from cocktails.db.repositories.tags import SQLTagRepository
 from cocktails.db.repositories.glasses import SQLGlassRepository
 from cocktails.db.repositories.ingredients import SQLIngredientRepository
 from cocktails.schemas.cocktails import Recipe as RecipeSchema
@@ -32,11 +33,13 @@ class SQLRecipeRepository(SQLRepository[RecipeModel, RecipeSchema]):
         ingredients: SQLIngredientRepository,
         glasses: SQLGlassRepository,
         garnishes: SQLGarnishRepository,
+        tags: SQLTagRepository,
     ) -> None:
         super().__init__(RecipeModel, factory)
         self._ingredients = ingredients
         self._glasses = glasses
         self._garnishes = garnishes
+        self._tags = tags
 
     def _prepare_to_create(
         self, session: RepositorySession, item: RecipeSchema
@@ -67,5 +70,10 @@ class SQLRecipeRepository(SQLRepository[RecipeModel, RecipeSchema]):
         for garnish in item.garnishes:
             garnishes.append(self._garnishes.create_if_not_exist(session, garnish))
         orm_item.garnishes = garnishes
+        
+        tags: list[TagModel] = []
+        for tag in item.tags:
+            tags.append(self._tags.create_if_not_exist(session, tag))
+        orm_item.tags = tags
 
         return orm_item

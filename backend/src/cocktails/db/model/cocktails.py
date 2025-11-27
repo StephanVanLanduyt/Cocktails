@@ -53,6 +53,23 @@ recipe_garnish_association_t = Table(
     schema=SCHEMA,
 )
 
+recipe_tag_association_t = Table(
+    "recipe_tag_association",
+    Base.metadata,
+    Column(
+        "recipe_id",
+        Integer,
+        ForeignKey(
+            f"{SCHEMA}.recipe.id",
+            ondelete="cascade",
+            onupdate="cascade",
+        ),
+        primary_key=True,
+    ),
+    Column("tag_id", Integer, ForeignKey(f"{SCHEMA}.tag.id"), primary_key=True),
+    schema=SCHEMA,
+)
+
 
 class Measure:
     def __init__(self, amount: Decimal, unit: str) -> None:
@@ -131,6 +148,32 @@ class Glass(Base):
     )
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column()
+
+
+class Tag(Base):
+    __tablename__ = "tag"
+    __table_args__ = (
+        Index(
+            "uix_tag_name",
+            "name",
+            unique=True,
+        ),
+        {"schema": SCHEMA},
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column()
+
+    recipes: Mapped[list["Recipe"]] = relationship(
+        lazy="selectin",
+        secondary=recipe_tag_association_t,
+        primaryjoin=lambda: Recipe.id
+        == recipe_tag_association_t.c.recipe_id,
+        secondaryjoin=lambda: Tag.id
+        == recipe_tag_association_t.c.tag_id,
+        uselist=True,
+        back_populates="tags",
+    )
 
 
 class Garnish(Base):
@@ -238,5 +281,15 @@ class Recipe(Base):
         primaryjoin=lambda: Recipe.id == recipe_garnish_association_t.c.recipe_id,
         secondaryjoin=lambda: Garnish.id == recipe_garnish_association_t.c.garnish_id,
         uselist=True,
+    )
+    tags: Mapped[list[Tag]] = relationship(
+        lazy="selectin",
+        secondary=recipe_tag_association_t,
+        primaryjoin=lambda: Recipe.id
+        == recipe_tag_association_t.c.recipe_id,
+        secondaryjoin=lambda: Tag.id
+        == recipe_tag_association_t.c.tag_id,
+        uselist=True,
+        back_populates="recipes",
     )
     method: Mapped[str] = mapped_column()
