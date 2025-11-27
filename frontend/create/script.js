@@ -4,6 +4,9 @@ const categoriesContainer = document.getElementById('categoriesContainer');
 // NEW: Container for Garnishes
 const garnishesContainer = document.getElementById('garnishesContainer'); 
 
+// NEW: Glass Select Element
+const glassSelect = document.getElementById('glassSelect'); 
+
 
 document.getElementById('addMeasure').addEventListener('click', addMeasureInput);
 document.getElementById('addCategory').addEventListener('click', addCategoryInput);
@@ -83,16 +86,31 @@ async function createMeasureElement() {
     // 1. Ingredient Dropdown
     const ingredientSelect = document.createElement('select');
     ingredientSelect.className = 'ingredient-select form-field'; 
+    ingredientSelect.required = true;
 
     const ingredients = await fetchData('/menu/ingredient/'); 
 
     if (ingredients && ingredients.length > 0) {
+        // Add a default prompt option
+        const defaultOption = document.createElement('option');
+        defaultOption.value = "";
+        defaultOption.textContent = "Select Ingredient";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        ingredientSelect.appendChild(defaultOption);
+
         ingredients.sort().forEach(ing => {
             const option = document.createElement('option');
             option.value = ing;
             option.textContent = ing;
             ingredientSelect.appendChild(option);
         });
+    } else {
+        // Fallback option if no garnishes are fetched
+         const fallbackOption = document.createElement('option');
+         fallbackOption.value = "None";
+         fallbackOption.textContent = "None";
+         ingredientSelect.appendChild(fallbackOption);
     }
     
     // 2. Quantity Amount Input
@@ -187,6 +205,41 @@ async function createGarnishElement() {
 
 
 /**
+ * NEW FUNCTION: Populates the Glass dropdown from the /menu/glass endpoint.
+ */
+async function populateGlassDropdown() {
+    const glasses = await fetchData('/menu/glass');
+
+    // Clear existing options
+    glassSelect.innerHTML = ''; 
+
+    if (glasses && glasses.length > 0) {
+        // Add a default prompt option
+        const defaultOption = document.createElement('option');
+        defaultOption.value = "";
+        defaultOption.textContent = "Select Glass Type";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        glassSelect.appendChild(defaultOption);
+
+        // Populate with fetched glasses
+        glasses.sort().forEach(glass => {
+            const option = document.createElement('option');
+            option.value = glass;
+            option.textContent = glass;
+            glassSelect.appendChild(option);
+        });
+    } else {
+        // Fallback option if no glasses are fetched
+        const fallbackOption = document.createElement('option');
+        fallbackOption.value = "Unknown";
+        fallbackOption.textContent = "Error: Could not fetch glasses";
+        glassSelect.appendChild(fallbackOption);
+    }
+}
+
+
+/**
  * Creates the HTML structure for a single category name input.
  */
 function createCategoryElement() {
@@ -234,6 +287,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Add initial rows on load
     await addMeasureInput();
     await addGarnishInput(); // NEW: Add initial garnish input
+    await populateGlassDropdown(); // NEW: Populate glass dropdown
     addCategoryInput();
 });
 
@@ -245,6 +299,8 @@ function handleSubmit() {
     const name = document.getElementById('drinkName').value.trim();
     // NEW: Get method text
     const method = document.getElementById('methodInput').value.trim(); 
+    // NEW: Get selected glass
+    const glass = glassSelect.value;
 
 
     if (!name) {
@@ -256,6 +312,13 @@ function handleSubmit() {
         alert("Please enter a Method description.");
         return;
     }
+    
+    // NEW: Check for glass selection
+    if (!glass || glass === "Select Glass Type") {
+        alert("Please select a Glass Type.");
+        return;
+    }
+
 
     // 1. Gather Measures
     const measures = Array.from(measuresContainer.querySelectorAll('.measure-item')).map(item => {
@@ -299,14 +362,15 @@ function handleSubmit() {
     }).filter(c => c !== null);
 
 
-    // 4. Construct the FINAL Payload (UPDATED to include garnishes and method)
+    // 4. Construct the FINAL Payload (UPDATED to include garnishes, method, and glass)
     const payload = {
         name: name,
         recipes: [
             {
                 measures: measures,
-                garnishes: garnishes, // NEW
-                method: method        // NEW
+                garnishes: garnishes, 
+                method: method,        
+                glass: glass           // NEW: Add the selected glass
                 // ingredients, id, timestamp are explicitly excluded
             }
         ],
@@ -336,7 +400,8 @@ function handleSubmit() {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        return response.json();
+        // Assuming the API returns a JSON response on success
+        return response.json(); 
     })
     .then(data => {
         document.getElementById('apiResponse').textContent = `Succesfull API Response:\n${JSON.stringify(data, null, 2)}`;
