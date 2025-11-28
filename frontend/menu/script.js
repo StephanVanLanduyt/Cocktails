@@ -141,7 +141,8 @@ async function fetchAndCategorizeItems() {
             const cocktailData = {
                 id: cocktailId,
                 name: cocktail.name,
-                ingredients: cocktail.ingredients ? cocktail.ingredients.map(ingredient => ingredient.name) : []
+                ingredients: cocktail.ingredients ? cocktail.ingredients.map(ingredient => ingredient.name) : [],
+                tags: (cocktail.recipe && cocktail.recipe.tags) ? cocktail.recipe.tags.map(tag => tag.name) : []
             };
             
             allCocktails.push(cocktailData);
@@ -166,7 +167,9 @@ async function fetchAndCategorizeItems() {
             const cocktailData = {
                 id: `sd${idCounter++}`,
                 name: drink,
-                ingredients: [drink]
+                ingredients: [drink],
+                // Soft drinks have no tags
+                tags: [] 
             };
             categorizedCocktails['Soft Drinks'].push(cocktailData);
             allCocktails.push(cocktailData);
@@ -278,10 +281,32 @@ function createCard(cocktail) {
 
     const inner = document.createElement('div');
     inner.classList.add('card-inner');
+    
     // --- FRONT FACE ---
     const front = document.createElement('div');
     front.classList.add('card-face', 'card-front');
-    front.textContent = cocktail.name;
+    
+    // Create and append the main cocktail name
+    const cocktailNameDisplay = document.createElement('span');
+    cocktailNameDisplay.textContent = cocktail.name;
+    front.appendChild(cocktailNameDisplay);
+
+
+    // --- UPDATED: Tags Display on Front as Pills ---
+    if (cocktail.tags && cocktail.tags.length > 0) {
+        const tagsContainer = document.createElement('div');
+        tagsContainer.classList.add('cocktail-tags');
+        
+        cocktail.tags.forEach(tag => {
+            const tagPill = document.createElement('span');
+            tagPill.classList.add('tag-pill');
+            tagPill.textContent = tag;
+            tagsContainer.appendChild(tagPill);
+        });
+        
+        front.appendChild(tagsContainer);
+    }
+    // --- END UPDATED ---
 
     // --- BACK FACE ---
     const back = document.createElement('div');
