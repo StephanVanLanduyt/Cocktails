@@ -124,9 +124,6 @@ class MeasuredIngredient(Base):
     quantity_amount: Mapped[Decimal] = mapped_column()
     quantity_unit: Mapped[str] = mapped_column()
 
-    # recipe: Mapped["Recipe"] = relationship(
-    #     lambda: Recipe, foreign_keys=recipe_id, back_populates="measures"
-    # )
     ingredient: Mapped[Ingredient] = relationship(
         lambda: Ingredient, foreign_keys=ingredient_id
     )
@@ -164,16 +161,6 @@ class Tag(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column()
 
-    recipes: Mapped[list["Recipe"]] = relationship(
-        lazy="selectin",
-        secondary=recipe_tag_association_t,
-        primaryjoin=lambda: Recipe.id
-        == recipe_tag_association_t.c.recipe_id,
-        secondaryjoin=lambda: Tag.id
-        == recipe_tag_association_t.c.tag_id,
-        uselist=True,
-        back_populates="tags",
-    )
 
 
 class Garnish(Base):
@@ -290,6 +277,5 @@ class Recipe(Base):
         secondaryjoin=lambda: Tag.id
         == recipe_tag_association_t.c.tag_id,
         uselist=True,
-        back_populates="recipes",
     )
     method: Mapped[str] = mapped_column()
