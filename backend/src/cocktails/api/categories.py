@@ -20,7 +20,7 @@ class CategoryService:
         return self._category_repository.get_by_name(self._session, name)
 
     def get_multi_category(self, skip: int = 0, limit: int = 100) -> list[Category]:
-        return self._category_repository.get_multi(self._session, skip, limit)
+        return self._category_repository.get_multi(self._session, skip, skip+limit)
 
     def create_if_not_exist(self, item: Category) -> int:
         return self._category_repository.create_if_not_exist(self._session, item)

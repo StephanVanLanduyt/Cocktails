@@ -10,4 +10,4 @@ class GlassService:
                 return glass
 
     def get_multi_glass(self, skip: int = 0, limit: int = 100) -> list[Glass]:
-        return list(islice((glass for glass in Glass), skip, limit))
+        return list(islice((glass for glass in Glass), skip, skip+limit))

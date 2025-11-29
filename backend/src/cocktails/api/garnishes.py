@@ -10,4 +10,4 @@ class GarnishService:
                 return garnish
 
     def get_multi_garnish(self, skip: int = 0, limit: int = 100) -> list[Garnish]:
-        return list(islice((garnish for garnish in Garnish), skip, limit))
+        return list(islice((garnish for garnish in Garnish), skip, skip+limit))

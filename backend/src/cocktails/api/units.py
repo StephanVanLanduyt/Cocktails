@@ -10,4 +10,4 @@ class UnitService:
                 return unit
 
     def get_multi_unit(self, skip: int = 0, limit: int = 100) -> list[Unit]:
-        return list(islice((unit for unit in Unit), skip, limit))
+        return list(islice((unit for unit in Unit), skip, skip+limit))

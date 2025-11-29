@@ -25,7 +25,7 @@ class IngredientService:
     def get_multi_ingredient(
         self, skip: int = 0, limit: int = 100
     ) -> list[IngredientName]:
-        return list(islice((ing for ing in IngredientName), skip, limit))
+        return list(islice((ing for ing in IngredientName), skip, skip+limit))
 
     def create_if_not_exist(self, item: Ingredient) -> int:
         return self._ingredient_repository.create_if_not_exist(self._session, item)
