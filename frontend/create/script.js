@@ -1,8 +1,8 @@
 const apiURL = 'http://192.168.1.5:50800'; 
 const measuresContainer = document.getElementById('measuresContainer');
 const categoriesContainer = document.getElementById('categoriesContainer');
-// NEW: Container for Garnishes
 const garnishesContainer = document.getElementById('garnishesContainer'); 
+const tagsContainer = document.getElementById('tagsContainer'); 
 
 // NEW: Glass Select Element
 const glassSelect = document.getElementById('glassSelect'); 
@@ -10,8 +10,8 @@ const glassSelect = document.getElementById('glassSelect');
 
 document.getElementById('addMeasure').addEventListener('click', addMeasureInput);
 document.getElementById('addCategory').addEventListener('click', addCategoryInput);
-// NEW: Event listener for adding Garnish
 document.getElementById('addGarnish').addEventListener('click', addGarnishInput); 
+document.getElementById('addTag').addEventListener('click', addTagInput); 
 
 document.getElementById('submitData').addEventListener('click', handleSubmit);
 
@@ -106,7 +106,6 @@ async function createMeasureElement() {
             ingredientSelect.appendChild(option);
         });
     } else {
-        // Fallback option if no garnishes are fetched
          const fallbackOption = document.createElement('option');
          fallbackOption.value = "None";
          fallbackOption.textContent = "None";
@@ -203,6 +202,57 @@ async function createGarnishElement() {
     return div;
 }
 
+/**
+ * NEW FUNCTION: Creates the HTML structure for a single tag.
+ */
+async function createTagElement() {
+    const div = document.createElement('div');
+    div.className = 'measure-item'; 
+    
+    // 1. Tag Dropdown
+    const tagSelect = document.createElement('select');
+    tagSelect.className = 'tag-select form-field'; 
+    tagSelect.required = true;
+
+    // Fetch tags (assuming endpoint is /menu/tag/)
+    const tags = await fetchData('/menu/tag/'); 
+
+    if (tags && tags.length > 0) {
+        // Add a default prompt option
+        const defaultOption = document.createElement('option');
+        defaultOption.value = "";
+        defaultOption.textContent = "Select tag";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        tagSelect.appendChild(defaultOption);
+        
+        // Populate with fetched tags
+        tags.sort().forEach(tag => {
+            const option = document.createElement('option');
+            option.value = tag; 
+            option.textContent = tag;
+            tagSelect.appendChild(option);
+        });
+    } else {
+         const fallbackOption = document.createElement('option');
+         fallbackOption.value = "None";
+         fallbackOption.textContent = "None";
+         tagSelect.appendChild(fallbackOption);
+    }
+    
+    // 2. Remove Button
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'remove-btn';
+    removeBtn.textContent = 'X';
+    removeBtn.onclick = () => div.remove();
+
+    div.appendChild(tagSelect);
+    div.appendChild(removeBtn);
+
+    return div;
+}
+
 
 /**
  * NEW FUNCTION: Populates the Glass dropdown from the /menu/glass endpoint.
@@ -277,6 +327,13 @@ async function addGarnishInput() {
     const garnishElement = await createGarnishElement()
     garnishesContainer.appendChild(garnishElement);
 }
+/**
+ * NEW FUNCTION: Adds a Tag input element to the container
+ */
+async function addTagInput() {
+    const tagElement = await createTagElement()
+    tagsContainer.appendChild(tagElement);
+}
 
 function addCategoryInput() {
     categoriesContainer.appendChild(createCategoryElement());
@@ -287,6 +344,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Add initial rows on load
     await addMeasureInput();
     await addGarnishInput(); // NEW: Add initial garnish input
+    await addTagInput(); // NEW: Add initial tag input
     await populateGlassDropdown(); // NEW: Populate glass dropdown
     addCategoryInput();
 });
@@ -350,6 +408,17 @@ function handleSubmit() {
     }).filter(g => g !== null);
 
 
+    const tags = Array.from(tagsContainer.querySelectorAll('.measure-item')).map(item => {
+        const tagName = item.querySelector('.tag-select').value;
+        if (tagName) {
+            return {
+                name: tagName
+            };
+        }
+        return null;
+    }).filter(g => g !== null);
+
+
     // 3. Gather Categories
     const categories = Array.from(categoriesContainer.querySelectorAll('.category-item')).map(item => {
         const categoryName = item.querySelector('.category-input').value.trim();
@@ -369,8 +438,9 @@ function handleSubmit() {
             {
                 measures: measures,
                 garnishes: garnishes, 
+                tags: tags, 
                 method: method,        
-                glass: glass           // NEW: Add the selected glass
+                glass: {name: glass}           // NEW: Add the selected glass
                 // ingredients, id, timestamp are explicitly excluded
             }
         ],
