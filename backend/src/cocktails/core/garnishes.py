@@ -55,3 +55,4 @@ class Garnish(StrEnum):
     CUCUMBER_SLICE = "Cucumber Slice"
     CUCUMBER_PEEL = "Cucumber Peel"
     CHERRY_DOTS_AND_PINEAPPLE_DASH = "Cherry Dots and Pineapple Dash"
+    PAPER_PLANE = "Paper Plane"
