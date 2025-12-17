@@ -114,3 +114,6 @@ class Ingredient(StrEnum):
     GINGER_BEER = "Ginger Beer"
     GINGER_ALE = "Ginger Ale"
     ESPRESSO = "Espresso"
+    DARK_CHOCOLATE = "Dark Chocolate"
+    SEMI_SKIMMED_MILK = "Semi-Skimmed Milk"
+    
