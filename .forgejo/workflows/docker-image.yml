@@ -10,24 +10,38 @@ jobs:
   build:
     name: Build Docker Images
     runs-on: docker
+    permissions:
+      contents: read
+      packages: write
     container:
       env:
         DOCKER_HOST: tcp://docker-in-docker:2375
+
     # Workflow environment variables
     steps:
-    - name: Install Docker CLI
-      run: |
-        apt-get update && apt-get install -y ca-certificates curl
-        curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian bullseye stable" > /etc/apt/sources.list.d/docker.list
-        apt-get update && apt-get install -y docker-ce-cli
-  
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Install Docker CLI
+        run: |
+          apt-get update && apt-get install -y ca-certificates curl
+          curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian bullseye stable" > /etc/apt/sources.list.d/docker.list
+          apt-get update && apt-get install -y docker-ce-cli
     
-    - name: Build
-      run: |
-        docker build ./backend \
-          --file ./backend/Dockerfile \
-          --tag cocktails:$(date +%Y%m%d) \
-          --tag cocktails:latest
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Build and Push
+        run: |
+          REGISTRY_URL=$(echo "${{ github.server_url }}" | sed -e 's|^[^/]*//||')
+          echo "Logging into $REGISTRY_URL..."
+          echo "${{ secrets.REGISTRY_TOKEN }}" | docker login "$REGISTRY_URL" -u "${{ github.actor }}" --password-stdin
+          
+          RAW_IMAGE_NAME="$REGISTRY_URL/${{ github.repository }}"
+          IMAGE_NAME=$(echo "$RAW_IMAGE_NAME" | tr '[:upper:]' '[:lower:]')
+          
+          echo "Building image: $IMAGE_NAME"
+          
+          docker build ./backend \
+            --file ./backend/Dockerfile \
+            --tag "$IMAGE_NAME:latest" \
+            --tag "$IMAGE_NAME:$(date +%Y%m%d)" \
+            --push
