@@ -4,6 +4,8 @@ from enum import StrEnum
 class Unit(StrEnum):
     ML = "ml"
     CL = "cl"
+    MG = "mg"
+    G = "g"
     DROPS = "drops"
     DASHES = "dashes"
     UNITS = "units"
