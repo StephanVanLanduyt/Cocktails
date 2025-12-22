@@ -1,69 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cocktail Recipe Creator</title>
-    <link rel="stylesheet" href="../components.css">
+    <link rel="stylesheet" href="../shared/components.css">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div class="container">
-    <h2>🍹 Create New Drink</h2>
-    
-    <label for="drinkName">Drink Name:</label>
-    <input type="text" id="drinkName" required>
+    <div class="container">
+        <h2>🍹 Create New Drink</h2>
 
-    <br>
+        <label for="drinkName">Drink Name:</label>
+        <input type="text" id="drinkName" required>
 
-    <h3>Recipe Measures</h3>
-    <div id="measuresContainer">
+        <br>
+
+        <h3>Recipe Measures</h3>
+        <div id="measuresContainer">
         </div>
-    <button type="button" id="addMeasure" class="btn btn-secondary add-btn">+</button>
+        <button type="button" id="addMeasure" class="btn btn-secondary add-btn">+</button>
 
-    <br>
-    
-    <h3>Garnishes</h3>
-    <div id="garnishesContainer">
+        <br>
+
+        <h3>Garnishes</h3>
+        <div id="garnishesContainer">
         </div>
-    <button type="button" id="addGarnish" class="btn btn-secondary add-btn">+</button>
+        <button type="button" id="addGarnish" class="btn btn-secondary add-btn">+</button>
 
-    <br>
+        <br>
 
-    <h3>Glass</h3>
-    <div id="glassContainer">
-        <select id="glassSelect" class="form-field" required></select>
+        <h3>Glass</h3>
+        <div id="glassContainer">
+            <select id="glassSelect" class="form-field" required></select>
+        </div>
+        <br>
+
+        <h3>Method</h3>
+        <textarea id="methodInput" class="form-field" rows="4"
+            placeholder="Describe the preparation steps (e.g., 'Shake all ingredients with ice and strain into a chilled coupe glass.')."
+            required></textarea>
+
+        <br>
+
+        <h3>Categories</h3>
+        <div id="categoriesContainer">
+        </div>
+        <button type="button" id="addCategory" class="btn btn-secondary add-btn">+</button>
+
+        <br>
+
+        <h3>Tags</h3>
+        <div id="tagsContainer">
+        </div>
+        <button type="button" id="addTag" class="btn btn-secondary add-btn">+</button>
+
+        <button type="button" id="submitData" class="btn btn-primary btn-block submit-btn">Submit Data</button>
+
+
+
+        <h3>API Response:</h3>
+        <pre class="result api-response" id="apiResponse">Ready to submit.</pre>
+        <h3>Generated JSON Payload:</h3>
+        <pre class="result" id="jsonOutput"></pre>
+
     </div>
-    <br>
-    
-    <h3>Method</h3>
-    <textarea id="methodInput" class="form-field" rows="4" placeholder="Describe the preparation steps (e.g., 'Shake all ingredients with ice and strain into a chilled coupe glass.')." required></textarea>
-    
-    <br>
-
-    <h3>Categories</h3>
-    <div id="categoriesContainer">
-        </div>
-    <button type="button" id="addCategory" class="btn btn-secondary add-btn">+</button>
-
-    <br>
-    
-    <h3>Tags</h3>
-    <div id="tagsContainer">
-        </div>
-    <button type="button" id="addTag" class="btn btn-secondary add-btn">+</button>
-
-    <button type="button" id="submitData" class="btn btn-primary btn-block submit-btn">Submit Data</button>
-
-
-
-    <h3>API Response:</h3>
-    <pre class="result api-response" id="apiResponse">Ready to submit.</pre>
-    <h3>Generated JSON Payload:</h3>
-    <pre class="result" id="jsonOutput"></pre>
-
-</div>
-<script src="script.js"></script>
+    <script src="../shared/common.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>

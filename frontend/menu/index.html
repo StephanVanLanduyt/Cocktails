@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cocktail Menu</title>
-    <link rel="stylesheet" href="../components.css">
+    <link rel="stylesheet" href="../shared/components.css">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    
+
     <div class="menu-container">
         <h1>🍹 Cocktail Menu 🍸</h1>
-        
+
         <button id="favorites-toggle-btn" class="icon-toggle-btn">
             ❤️
             <span id="favorites-count" class="count-badge">0</span>
@@ -23,14 +25,14 @@
         </div>
 
         <div id="cocktail-output" style="display: none;">
-            
+
             <div id="category-buttons" class="category-bar">
                 <div id="category-wrapper">
-                </div>    
+                </div>
             </div>
-            
+
             <h2 id="current-category-title">Select a Category</h2>
-            
+
             <div id="cocktail-menu" class="card-grid">
             </div>
         </div>
@@ -48,6 +50,8 @@
         </div>
     </div>
 
+    <script src="../shared/common.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>
