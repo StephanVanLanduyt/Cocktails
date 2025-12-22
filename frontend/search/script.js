@@ -3,7 +3,6 @@ const spinnerContainer = document.getElementById('spinner-container');
 const errorMessage = document.getElementById('error-message');
 const recipeInput = document.getElementById('recipe-name-input');
 const multiplierBar = document.getElementById('multiplier-bar');
-const apiURL = 'http://192.168.1.5:50800/menu/cocktail/'; // Replace with your actual API base URL
 
 let lastRecipeData = null;
 let currentMultiplier = 1;
@@ -15,11 +14,11 @@ let currentMultiplier = 1;
  * @returns {Promise<Object|null>} A promise that resolves with the recipe data or null.
  */
 async function fetchRecipeByName(name) {
-    
+
     // Standardize the search name for the mock data lookup
     const searchKey = name.trim().toLowerCase();
     const encodedName = encodeURIComponent(searchKey);
-    const baseUrl = `${apiURL}${encodedName}`;
+    const baseUrl = `${apiURL}/menu/cocktail/${encodedName}`;
 
     try {
         const response = await fetch(baseUrl);
@@ -44,7 +43,7 @@ async function fetchRecipeByName(name) {
     } catch (error) {
         // Log the error for debugging and re-throw it to be caught by the searchRecipe function
         console.error('API Fetch Error:', error);
-        throw error; 
+        throw error;
     }
 
 }
@@ -59,14 +58,14 @@ async function fetchRecipeByName(name) {
 function renderRecipeCard(data, multiplier = 1, isFlipped = false) {
     const recipeName = data.name.toUpperCase();
     const recipeDetails = data.recipe;
-    
+
     // Create the list of ingredients/measures for the card back
     const ingredientsList = recipeDetails.measures.map(measure => {
         // Note: The 'amount' in your JSON is '0'. This line correctly handles
         // multiplication and formatting for whatever the actual amount is.
         const originalAmount = measure.quantity.amount;
         const multipliedAmount = (originalAmount * multiplier).toFixed(1).replace(/\.0$/, ''); // Format: 1.0 -> 1, 1.5 -> 1.5
-        
+
         const unit = measure.quantity.unit;
         const ingredient = measure.ingredient.name;
         return `<li>${multipliedAmount} ${unit}    ${ingredient}</li>`;
@@ -125,7 +124,7 @@ function renderRecipeCard(data, multiplier = 1, isFlipped = false) {
  * NEW: Updates the recipe card with the new multiplier.
  * @param {number} multiplier - The new multiplier value (1, 2, 3, 4, or 5).
  */
- function setMultiplier(multiplier) {
+function setMultiplier(multiplier) {
     if (lastRecipeData) {
         // 1. Check current flip state before re-rendering
         const currentCard = cardGrid.querySelector('.cocktail-card');
@@ -134,7 +133,7 @@ function renderRecipeCard(data, multiplier = 1, isFlipped = false) {
 
         currentMultiplier = multiplier;
         renderRecipeCard(lastRecipeData, currentMultiplier, isFlipped);
-        
+
         // Update active button state
         document.querySelectorAll('.multiplier-bar button').forEach(button => {
             button.classList.remove('active');
@@ -165,7 +164,7 @@ async function searchRecipe() {
     spinnerContainer.style.display = 'flex';
 
     try {
-        const result = await fetchRecipeByName(name); 
+        const result = await fetchRecipeByName(name);
 
         // Hide spinner
         spinnerContainer.style.display = 'none';
@@ -173,7 +172,7 @@ async function searchRecipe() {
         if (result && result.recipe) {
             // Store the original data and reset multiplier
             lastRecipeData = result;
-            currentMultiplier = 1; 
+            currentMultiplier = 1;
             setMultiplier(currentMultiplier); // Set multiplier to 1X and render the card
             multiplierBar.style.display = 'flex'; // Show multiplier bar
         } else {

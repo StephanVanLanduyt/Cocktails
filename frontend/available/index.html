@@ -1,40 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ingredient Availability Updater</title>
-    
-    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="../shared/components.css">
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div class="container">
-    <h2>🥬 Ingredient Availability Update</h2>
-    
-    <label for="ingredientSelect">Select Ingredient:</label>
-    <select id="ingredientSelect" class="form-field" required>
-        <option value="" disabled selected>Loading ingredients...</option>
-    </select>
+    <div class="container">
+        <h2>🥬 Ingredient Availability Update</h2>
 
-    <br>
+        <label for="ingredientSelect">Select Ingredient:</label>
+        <select id="ingredientSelect" class="form-field" required>
+            <option value="" disabled selected>Loading ingredients...</option>
+        </select>
 
-    <label for="isAvailableSelect">Set Availability:</label>
-    <select id="isAvailableSelect" class="form-field" required>
-        <option value="true">Available</option>
-        <option value="false">Unavailable</option>
-    </select>
+        <br>
 
-    <br>
+        <label for="isAvailableSelect">Set Availability:</label>
+        <select id="isAvailableSelect" class="form-field" required>
+            <option value="true">Available</option>
+            <option value="false">Unavailable</option>
+        </select>
 
-    <button type="button" id="submitUpdate" class="submit-btn">Update Availability</button>
+        <br>
 
-    <h3>API Response:</h3>
-    <pre class="result api-response" id="apiResponse">Ready to submit.</pre>
-    <h3>Generated JSON Payload:</h3>
-    <pre class="result" id="jsonOutput"></pre>
+        <button type="button" id="submitUpdate" class="btn btn-primary btn-block submit-btn">Update
+            Availability</button>
 
-</div>
-<script src="script.js"></script>
+        <h3>API Response:</h3>
+        <pre class="result api-response" id="apiResponse">Ready to submit.</pre>
+        <h3>Generated JSON Payload:</h3>
+        <pre class="result" id="jsonOutput"></pre>
+
+    </div>
+    <script src="../shared/common.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>

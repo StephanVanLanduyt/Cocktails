@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipe Search</title>
+    <link rel="stylesheet" href="../shared/components.css">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="menu-container">
         <h1>🍸 Recipe Finder 🍹</h1>
 
         <div class="search-area">
             <input type="text" id="recipe-name-input" placeholder="Enter recipe name">
-            <button onclick="searchRecipe()">Search</button>
+            <button onclick="searchRecipe()" class="btn btn-primary">Search</button>
         </div>
 
         <div class="multiplier-bar" id="multiplier-bar" style="display:none;">
@@ -25,17 +28,19 @@
 
         <div id="recipe-info">
             <div class="error-message" id="error-message" style="display: none;"></div>
-            
+
             <div class="spinner-container" id="spinner-container" style="display: none;">
                 <div class="spinner"></div>
                 <p>Searching...</p>
             </div>
-            
+
             <div class="card-grid" id="recipe-card-grid">
-                </div>
+            </div>
         </div>
     </div>
 
+    <script src="../shared/common.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>

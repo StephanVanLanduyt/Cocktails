@@ -1,4 +1,3 @@
-const apiURL = 'http://192.168.1.5:50800'; 
 const randomCocktailBtn = document.getElementById('randomCocktailBtn');
 const cocktailDisplay = document.getElementById('cocktail-display');
 const loader = document.getElementById('loader-spinner');

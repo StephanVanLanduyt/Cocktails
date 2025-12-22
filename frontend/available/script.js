@@ -1,57 +1,7 @@
-const apiURL = 'http://192.168.1.5:50800'; 
 const ingredientSelect = document.getElementById('ingredientSelect');
 const isAvailableSelect = document.getElementById('isAvailableSelect');
 
 document.getElementById('submitUpdate').addEventListener('click', handleSubmit);
-
-/**
- * Fetches paginated data from a specified endpoint. (Reused from your original script)
- */
-async function fetchData(endpoint) {
-    const baseUrl = `${apiURL}${endpoint}`;
-    const MAX_LIMIT = 100;
-
-    let allData = [];
-    let skip = 0;
-    let keepFetching = true;
-
-    while (keepFetching) {
-        const currentUrl = new URL(baseUrl);
-
-        currentUrl.searchParams.set('limit', MAX_LIMIT);
-        currentUrl.searchParams.set('skip', skip);
-        
-        try {
-            const response = await fetch(currentUrl.toString());
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-    
-            const data = await response.json();
-            
-            if (Array.isArray(data)) {
-                allData = allData.concat(data);
-                
-                if (data.length < MAX_LIMIT) {
-                    keepFetching = false;
-                } else {
-                    skip += MAX_LIMIT;
-                }
-            } else {
-                console.error("API response was not an array:", data);
-                keepFetching = false;
-                return null;
-            }
-    
-        } catch (error) {
-            console.error("Could not fetch data during pagination:", error);
-            keepFetching = false;
-            return null; 
-        }
-    }
-
-    return allData;
-}
 
 
 /**
@@ -59,13 +9,13 @@ async function fetchData(endpoint) {
  */
 async function populateIngredients() {
     ingredientSelect.innerHTML = '<option value="" disabled selected>Loading ingredients...</option>';
-    
+
     // Fetch the list of ingredient names from the same endpoint as your original script
-    const ingredients = await fetchData('/menu/ingredient/'); 
-    
+    const ingredients = await fetchData('/menu/ingredient/');
+
     if (ingredients && ingredients.length > 0) {
         ingredientSelect.innerHTML = '<option value="" disabled selected>-- Select an Ingredient --</option>'; // Reset with a better default
-        
+
         ingredients.sort().forEach(ing => {
             const option = document.createElement('option');
             option.value = ing;
@@ -97,7 +47,7 @@ function handleSubmit() {
     };
 
     const jsonPayload = JSON.stringify(payload, null, 2);
-    
+
     // Display the generated JSON
     document.getElementById('jsonOutput').textContent = jsonPayload;
     document.getElementById('apiResponse').textContent = 'Submitting...';
@@ -113,22 +63,22 @@ function handleSubmit() {
         },
         body: jsonPayload
     })
-    .then(response => {
-        // API response handling
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        // Attempt to parse response body if not a 204 No Content
-        return response.json().catch(() => ({ message: 'Update successful, no content returned.' }));
-    })
-    .then(data => {
-        document.getElementById('apiResponse').textContent = `Successful API Response for ${selectedIngredient}:\n${JSON.stringify(data, null, 2)}`;
-        console.log('Success:', data);
-    })
-    .catch(error => {
-        document.getElementById('apiResponse').textContent = `Error during update:\n${error.message}`;
-        console.error('Error:', error);
-    });
+        .then(response => {
+            // API response handling
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            // Attempt to parse response body if not a 204 No Content
+            return response.json().catch(() => ({ message: 'Update successful, no content returned.' }));
+        })
+        .then(data => {
+            document.getElementById('apiResponse').textContent = `Successful API Response for ${selectedIngredient}:\n${JSON.stringify(data, null, 2)}`;
+            console.log('Success:', data);
+        })
+        .catch(error => {
+            document.getElementById('apiResponse').textContent = `Error during update:\n${error.message}`;
+            console.error('Error:', error);
+        });
 }
 
 // Populate the dropdown when the page loads

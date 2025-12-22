@@ -1,4 +1,3 @@
-const apiURL = 'http://192.168.1.5:50800'; 
 const measuresContainer = document.getElementById('measuresContainer');
 const categoriesContainer = document.getElementById('categoriesContainer');
 const garnishesContainer = document.getElementById('garnishesContainer'); 
@@ -14,67 +13,6 @@ document.getElementById('addGarnish').addEventListener('click', addGarnishInput)
 document.getElementById('addTag').addEventListener('click', addTagInput); 
 
 document.getElementById('submitData').addEventListener('click', handleSubmit);
-
-async function fetchData(endpoint) {
-    const baseUrl = `${apiURL}${endpoint}`;
-    const MAX_LIMIT = 100;
-
-    let allData = [];
-    let skip = 0;
-    let keepFetching = true;
-
-    while (keepFetching) {
-        const currentUrl = new URL(baseUrl);
-
-        // Append limit and skip parameters to the query string
-        currentUrl.searchParams.set('limit', MAX_LIMIT);
-        currentUrl.searchParams.set('skip', skip);
-
-        console.log(`Fetching data with skip=${skip} and limit=${MAX_LIMIT}...`);
-        
-        try {
-            // 2. Make the network request
-            const response = await fetch(currentUrl.toString());
-            // 3. Check if the request was successful
-            if (!response.ok) {
-                // Throw an error if the HTTP status is not 200-299
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-    
-            // 4. Parse the JSON body and return the data
-            const data = await response.json();
-            
-            // Ensure data is an array before concatenating
-            if (Array.isArray(data)) {
-                allData = allData.concat(data);
-                
-                // 5. Check if we've reached the end
-                if (data.length < MAX_LIMIT) {
-                    // If fewer than the max limit were returned, we have reached the end.
-                    keepFetching = false;
-                    console.log(`Pagination finished. Total records retrieved: ${allData.length}`);
-                } else {
-                    // Otherwise, increment 'skip' by the 'limit' for the next request
-                    skip += MAX_LIMIT;
-                }
-            } else {
-                // Handle case where API response structure is unexpected
-                console.error("API response was not an array:", data);
-                keepFetching = false;
-                return null;
-            }
-    
-        } catch (error) {
-            // 5. Handle any network or parsing errors
-            console.error("Could not fetch data during pagination:", error);
-            // You might return an empty array or null here, depending on your app's needs
-            keepFetching = false;
-            return null; 
-        }
-    }
-
-    return allData;
-}
 
 /**
  * Creates the HTML structure for a single measure (ingredient, amount, unit).
@@ -138,7 +76,7 @@ async function createMeasureElement() {
     // 4. Remove Button
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
-    removeBtn.className = 'remove-btn';
+    removeBtn.className = 'btn btn-danger btn-sm remove-btn';
     removeBtn.textContent = 'X';
     removeBtn.onclick = () => div.remove();
 
@@ -192,7 +130,7 @@ async function createGarnishElement() {
     // 2. Remove Button
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
-    removeBtn.className = 'remove-btn';
+    removeBtn.className = 'btn btn-danger btn-sm remove-btn';
     removeBtn.textContent = 'X';
     removeBtn.onclick = () => div.remove();
 
@@ -243,7 +181,7 @@ async function createTagElement() {
     // 2. Remove Button
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
-    removeBtn.className = 'remove-btn';
+    removeBtn.className = 'btn btn-danger btn-sm remove-btn';
     removeBtn.textContent = 'X';
     removeBtn.onclick = () => div.remove();
 
@@ -306,7 +244,7 @@ function createCategoryElement() {
     // Remove Button
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
-    removeBtn.className = 'remove-btn';
+    removeBtn.className = 'btn btn-danger btn-sm remove-btn';
     removeBtn.textContent = 'X';
     removeBtn.onclick = () => div.remove();
 
