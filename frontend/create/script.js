@@ -138,7 +138,7 @@ async function createMeasureElement() {
     // 4. Remove Button
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
-    removeBtn.className = 'remove-btn';
+    removeBtn.className = 'btn btn-danger btn-sm remove-btn';
     removeBtn.textContent = 'X';
     removeBtn.onclick = () => div.remove();
 
@@ -192,7 +192,7 @@ async function createGarnishElement() {
     // 2. Remove Button
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
-    removeBtn.className = 'remove-btn';
+    removeBtn.className = 'btn btn-danger btn-sm remove-btn';
     removeBtn.textContent = 'X';
     removeBtn.onclick = () => div.remove();
 
@@ -243,7 +243,7 @@ async function createTagElement() {
     // 2. Remove Button
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
-    removeBtn.className = 'remove-btn';
+    removeBtn.className = 'btn btn-danger btn-sm remove-btn';
     removeBtn.textContent = 'X';
     removeBtn.onclick = () => div.remove();
 
@@ -306,7 +306,7 @@ function createCategoryElement() {
     // Remove Button
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
-    removeBtn.className = 'remove-btn';
+    removeBtn.className = 'btn btn-danger btn-sm remove-btn';
     removeBtn.textContent = 'X';
     removeBtn.onclick = () => div.remove();
 
