@@ -36,7 +36,7 @@ jobs:
           echo "${{ secrets.REGISTRY_TOKEN }}" | docker login "$REGISTRY_URL" -u "${{ github.actor }}" --password-stdin
           
           BASE_NAME=$(echo "$REGISTRY_URL/${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-          TAG_DATE = $(date +%Y%m%d)
+          TAG_DATE=$(date +%Y%m%d)
 
           BACKEND_IMAGE="$BASE_NAME-backend"
           FRONTEND_IMAGE="$BASE_NAME-frontend"
