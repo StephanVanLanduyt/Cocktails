@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  postgres_db:
+    image: postgres:15
+    container_name: CocktailsDB
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=cocktails
+      - POSTGRES_USER=postgres
+    ports:
+      - 23456:5432
+    volumes:
+      - /portainer/Files/AppData/Config/Cocktails/Postgres_15:/var/lib/postgresql/data/
+
+  python_app:
+    image: 192.168.1.5:23000/stephanvanlanduyt/cocktails-backend:latest
+    container_name: CocktailsApi
+    environment:
+      - PG_DSN=postgresql+psycopg2://postgres:postgres@postgres_db:5432/cocktails
+    ports:
+      - 50800:8080
+    depends_on:
+      - postgres_db
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+  Apache:
+    image: 192.168.1.5:23000/stephanvanlanduyt/cocktails-frontend:latest
+    ports:
+      - 3333:80 
+    container_name: CocktailsApache
+    restart: unless-stopped
+    depends_on:
+      - python_app
+
