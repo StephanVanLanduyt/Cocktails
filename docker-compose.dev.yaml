@@ -3,7 +3,7 @@ version: '3'
 services:
   postgres_db:
     image: postgres:15.15@sha256:697ff70295146d53b702b07532fe68aaed7a5f10d04ff68edbeffd5fbacd15a5
-    container_name: CocktailsDB
+    container_name: CocktailsDBDev
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=cocktails
@@ -15,7 +15,7 @@ services:
 
   python_app:
     image: 192.168.1.5:23000/stephanvanlanduyt/cocktails-backend:latest
-    container_name: CocktailsApi
+    container_name: CocktailsApiDev
     environment:
       - PG_DSN=postgresql+psycopg2://postgres:postgres@postgres_db:5432/cocktails
     ports:
@@ -27,7 +27,7 @@ services:
     image: httpd:2.4.66-alpine@sha256:6b7535d8a33c42b0f0f48ff0067765d518503e465b1bf6b1629230b62a466a87
     ports:
       - 33333:80 
-    container_name: CocktailsApache
+    container_name: CocktailsApacheDev
     restart: unless-stopped
     volumes:
       - /portainer/Files/AppData/Config/Cocktails/frontend:/usr/local/apache2/htdocs
