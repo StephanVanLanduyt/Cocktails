@@ -19,7 +19,7 @@ services:
     environment:
       - PG_DSN=postgresql+psycopg2://postgres:postgres@postgres_db:5432/cocktails
     ports:
-      - 50801:8080
+      - 50802:8080
     depends_on:
       - postgres_db
 
