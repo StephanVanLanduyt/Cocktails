@@ -35,13 +35,22 @@ jobs:
           echo "Logging into $REGISTRY_URL..."
           echo "${{ secrets.REGISTRY_TOKEN }}" | docker login "$REGISTRY_URL" -u "${{ github.actor }}" --password-stdin
           
-          RAW_IMAGE_NAME="$REGISTRY_URL/${{ github.repository }}"
-          IMAGE_NAME=$(echo "$RAW_IMAGE_NAME" | tr '[:upper:]' '[:lower:]')
-          
-          echo "Building image: $IMAGE_NAME"
-          
+          BASE_NAME=$(echo "$REGISTRY_URL/${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          TAG_DATE = $(date +%Y%m%d)
+
+          BACKEND_IMAGE="$BASE_NAME-backend"
+          FRONTEND_IMAGE="$BASE_NAME-frontend"
+
+          echo "Building Backend: $BACKEND_IMAGE"
           docker build ./backend \
             --file ./backend/Dockerfile \
-            --tag "$IMAGE_NAME:latest" \
-            --tag "$IMAGE_NAME:$(date +%Y%m%d)" \
+            --tag "$BACKEND_IMAGE:latest" \
+            --tag "$BACKEND_IMAGE:$TAG_DATE" \
+            --push
+          
+          echo "Building Frontend: $FRONTEND_IMAGE"
+          docker build ./frontend \
+            --file ./frontend/Dockerfile \
+            --tag "$FRONTEND_IMAGE:latest" \
+            --tag "$FRONTEND_IMAGE:$TAG_DATE" \
             --push
