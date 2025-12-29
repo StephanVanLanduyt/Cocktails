@@ -12,7 +12,7 @@ async function fetchData(endpoint) {
     let keepFetching = true;
 
     while (keepFetching) {
-        const currentUrl = new URL(baseUrl);
+        const currentUrl = new URL(baseUrl, window.location.origin);
 
         currentUrl.searchParams.set('limit', MAX_LIMIT);
         currentUrl.searchParams.set('skip', skip);
