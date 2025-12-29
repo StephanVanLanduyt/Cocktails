@@ -11,10 +11,10 @@ services:
     ports:
       - 34567:5432
     volumes:
-      - /portainer/Files/AppData/Config/Cocktails/Postgres_15:/var/lib/postgresql/data/
+      - /portainer/Files/AppData/Config/Cocktails/Postgres_15_Dev:/var/lib/postgresql/data/
 
   python_app:
-    image: 192.168.1.5:23000/stephanvanlanduyt/cocktails-backend:latest
+    image: 192.168.1.5:23000/stephanvanlanduyt/cocktails-backend:20251224@sha256:1474532b730ba8b8cbe529ff9271f3c04462dc3423311c74576a6f33b38bba60
     container_name: CocktailsApiDev
     environment:
       - PG_DSN=postgresql+psycopg2://postgres:postgres@postgres_db:5432/cocktails
