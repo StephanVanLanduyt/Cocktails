@@ -30,7 +30,8 @@ services:
     container_name: CocktailsApacheDev
     restart: unless-stopped
     volumes:
-      - /portainer/Files/AppData/Config/Cocktails/frontend/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - /portainer/Files/AppData/Config/Cocktails/frontend/apache/cocktails.conf:/usr/local/apache2/conf/extra/cocktails.conf
       - /portainer/Files/AppData/Config/Cocktails/frontend/src:/usr/local/apache2/htdocs
+    command: httpd-foreground -c "Include conf/extra/cocktails.conf"
     depends_on:
       - python_app
