@@ -1,0 +1,39 @@
+{		
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",		
+  "extends": ["config:recommended"],		
+  "dependencyDashboard": true,		
+  "dependencyDashboardTitle": "Renovate Dashboard",		
+  "assignees": ["StephanVanLanduyt"],		
+  "labels": ["renovate"],		
+  "configMigration": true,		
+  "prHourlyLimit": 0,
+  "packageRules": [
+    {
+      "matchManagers": ["html", "cdnurl"],
+      "enabled": true
+    },
+    {
+      "matchManagers": ["pip_requirements", "poetry", "pipenv", "pip_setup"],
+      "enabled": false
+    },
+    {
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
+    },
+    {
+      "matchPackageNames": "postgres",
+      "matchCurrentVersion": "15",
+      "enabled": false
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["httpd"],
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)(?:\\.(?<patch>\\d+))?(?:-(?<compatibility>.*))?$"
+    },
+    {
+      "matchPackageNames": ["stephanvanlanduyt/cocktails"],
+      "versioning": "regex:^(?<currentValue>(?<major>\\d{4})(?<minor>\\d{2})(?<patch>\\d{2}))"
+    }
+  ]
+}
