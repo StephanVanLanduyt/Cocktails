@@ -1,4 +1,4 @@
-const apiURL = 'http://192.168.1.5:50800';
+const apiURL = '/api';
 
 /**
  * Fetches paginated data from a specified endpoint.
@@ -16,18 +16,18 @@ async function fetchData(endpoint) {
 
         currentUrl.searchParams.set('limit', MAX_LIMIT);
         currentUrl.searchParams.set('skip', skip);
-        
+
         try {
             const response = await fetch(currentUrl.toString());
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-    
+
             const data = await response.json();
-            
+
             if (Array.isArray(data)) {
                 allData = allData.concat(data);
-                
+
                 if (data.length < MAX_LIMIT) {
                     keepFetching = false;
                 } else {
@@ -38,11 +38,11 @@ async function fetchData(endpoint) {
                 keepFetching = false;
                 return null;
             }
-    
+
         } catch (error) {
             console.error("Could not fetch data during pagination:", error);
             keepFetching = false;
-            return null; 
+            return null;
         }
     }
 
@@ -74,7 +74,7 @@ function orderFirstAndLastObjectKeys(originalObject) {
     if (originalObject.hasOwnProperty(lastKey)) {
         orderedKeys.push(lastKey);
     }
-    
+
     const reorderedObject = {};
     orderedKeys.forEach(key => {
         reorderedObject[key] = originalObject[key];

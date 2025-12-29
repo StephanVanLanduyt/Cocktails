@@ -30,6 +30,7 @@ services:
     container_name: CocktailsApacheDev
     restart: unless-stopped
     volumes:
+      - /portainer/Files/AppData/Config/Cocktails/frontend/httpd.conf:/usr/local/apache2/conf/httpd.conf
       - /portainer/Files/AppData/Config/Cocktails/frontend/src:/usr/local/apache2/htdocs
     depends_on:
       - python_app
