@@ -1,4 +1,4 @@
-FROM httpd:2.4-alpine
+FROM httpd:2.4.66-alpine
 
 COPY apache/cocktails.conf /usr/local/apache2/conf/extra/cocktails.conf
 
