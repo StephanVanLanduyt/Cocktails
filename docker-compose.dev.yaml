@@ -14,7 +14,7 @@ services:
       - /portainer/Files/AppData/Config/Cocktails/Postgres_15_Dev:/var/lib/postgresql/data/
 
   python_app:
-    image: 192.168.1.5:23000/stephanvanlanduyt/cocktails-backend:1.0.20251229@sha256:0db21041bed41877706a5233c4808cdf2715716f46ae46ee02c9dfb6fbcf35b5
+    image: 192.168.1.5:23000/stephanvanlanduyt/cocktails-backend:1.0.20260107@sha256:3eb5230040366bf12ed7e08c9c062a05716d1c336db5e6b53fe34b65cc93c262
     container_name: CocktailsApiDev
     environment:
       - PG_DSN=postgresql+psycopg2://postgres:postgres@postgres_db:5432/cocktails
