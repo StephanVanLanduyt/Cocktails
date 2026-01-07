@@ -45,12 +45,12 @@ jobs:
           docker build ./backend \
             --file ./backend/Dockerfile \
             --tag "$BACKEND_IMAGE:latest" \
-            --tag "$BACKEND_IMAGE:$TAG_DATE" \
+            --tag "$BACKEND_IMAGE:1.0.$TAG_DATE" \
             --push
           
           echo "Building Frontend: $FRONTEND_IMAGE"
           docker build ./frontend \
             --file ./frontend/Dockerfile \
             --tag "$FRONTEND_IMAGE:latest" \
-            --tag "$FRONTEND_IMAGE:$TAG_DATE" \
+            --tag "$FRONTEND_IMAGE:1.0.$TAG_DATE" \
             --push
