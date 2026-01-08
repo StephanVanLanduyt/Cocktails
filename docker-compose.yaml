@@ -26,7 +26,7 @@ services:
       - com.centurylinklabs.watchtower.enable=true
 
   Apache:
-    image: 192.168.1.5:23000/stephanvanlanduyt/cocktails-frontend:1.0.20260107@sha256:aea714eded99bbaab0137c3a33ad74e9a4d55f12665b70ab16f37faead8e184b
+    image: 192.168.1.5:23000/stephanvanlanduyt/cocktails-frontend:1.0.20260108@sha256:2e2f9194b69b242faf38a469fd8ffa8c6ff0fecb25572a65fcba0f319fdc866d
     ports:
       - 3333:80 
     container_name: CocktailsApache
