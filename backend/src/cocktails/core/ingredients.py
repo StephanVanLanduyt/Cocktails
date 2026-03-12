@@ -97,6 +97,7 @@ class Ingredient(StrEnum):
     TOMATO_JUICE = "Tomato Juice"
     AROMATIC_BITTERS = "Aromatic Bitters"
     ORANGE_BITTERS = "Orange Bitters"
+    PEYCHAUDS_BITTERS = "Peychaud's Bitters"
     TABASCO = "Tabasco"
     EGG_WHITE = "Egg White"
     EGG_YOLK = "Egg Yolk"
