@@ -22,6 +22,8 @@ WORKDIR ${PROJECT_DIR}
 COPY pyproject.toml .
 COPY poetry.lock .
 
+# Force pip to download the pre-compiled binary wheel for greenlet
+RUN poetry run pip install --only-binary :all: greenlet==2.0.2
 
 # Create the virtualenv using poetry, it will be created in ${VENV_DIR}
 RUN poetry install --no-dev --no-root
