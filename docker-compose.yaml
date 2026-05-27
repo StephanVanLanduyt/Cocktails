@@ -14,7 +14,7 @@ services:
       - /portainer/Files/AppData/Config/Cocktails/Postgres_15:/var/lib/postgresql/data/
 
   python_app:
-    image: 192.168.1.5:23000/stephanvanlanduyt/cocktails-backend:1.0.20260506@sha256:7f52a0eac52f3aa4d3cc696f30b05d9a92e6947dc0607865362fa3717eed779f
+    image: 192.168.1.4:23000/stephanvanlanduyt/cocktails-backend:1.0.20260506@sha256:7f52a0eac52f3aa4d3cc696f30b05d9a92e6947dc0607865362fa3717eed779f
     container_name: CocktailsApi
     environment:
       - PG_DSN=postgresql+psycopg2://postgres:postgres@postgres_db:5432/cocktails
@@ -26,7 +26,7 @@ services:
       - com.centurylinklabs.watchtower.enable=true
 
   Apache:
-    image: 192.168.1.5:23000/stephanvanlanduyt/cocktails-frontend:1.0.20260506@sha256:531c2043f54a26d3be7094807108a7eaa933ec9aaf2c041403259e044f93f5a3
+    image: 192.168.1.4:23000/stephanvanlanduyt/cocktails-frontend:1.0.20260506@sha256:531c2043f54a26d3be7094807108a7eaa933ec9aaf2c041403259e044f93f5a3
     ports:
       - 3333:80 
     container_name: CocktailsApache
