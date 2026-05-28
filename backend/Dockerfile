@@ -8,9 +8,9 @@ ARG APP_BIND_PORT=8080
 ARG APP_BIND_HOST=0.0.0.0
 
 # Stage that prepares the virtualenv for the build and deploy
-FROM python:3.14 as virtualenv_preparer
+FROM python:3.11.15 AS virtualenv_preparer
 
-ENV POETRY_VERSION=1.2.2
+ENV POETRY_VERSION=2.1.1
 
 RUN pip install "poetry==$POETRY_VERSION"
 
@@ -24,11 +24,11 @@ COPY poetry.lock .
 
 
 # Create the virtualenv using poetry, it will be created in ${VENV_DIR}
-RUN poetry install --no-dev --no-root
+RUN poetry install --only main --no-root
 
 
 # Stage that prepares the deploy environment
-FROM python:3.14-slim as predeploy
+FROM python:3.11.15-slim AS predeploy
 ARG PROJECT_DIR
 ARG VENV_DIR
 
@@ -41,13 +41,13 @@ COPY --from=virtualenv_preparer ${VENV_DIR} ${VENV_DIR}
 
 
 # Stage that builds the python project
-FROM virtualenv_preparer as builder
+FROM virtualenv_preparer AS builder
 COPY src ./src
 RUN poetry build -f wheel
 
 
 # Stage that is actually deployed
-FROM predeploy as deploy
+FROM predeploy AS deploy
 ARG PROJECT_DIR
 ARG APP_BIND_HOST
 ARG APP_BIND_PORT
@@ -73,7 +73,7 @@ COPY src/ .
 
 # RUN python -m pip install --no-deps /tmp/*.whl && rm /tmp/*.whl
 
-# Do not run as root
+# Do not run AS root
 RUN groupadd -r admin && useradd -m -r -g admin admin
 USER admin
 
