@@ -5,19 +5,19 @@ services:
     image: postgres:15.18@sha256:2e2c9831b5271ccc64e5cc8819ccfc3368a4c3e0d8afc74ca9da28b9b8d937b6
     container_name: CocktailsDBDev
     environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=cocktails
-      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
     ports:
       - 34567:5432
     volumes:
-      - /portainer/Files/AppData/Config/Cocktails/Postgres_15_Dev:/var/lib/postgresql/data/
+      - ${POSTGRES_DATA_PATH}:/var/lib/postgresql/data/
 
   python_app:
-    image: 192.168.1.5:23000/stephanvanlanduyt/cocktails-backend:1.0.20260506@sha256:7f52a0eac52f3aa4d3cc696f30b05d9a92e6947dc0607865362fa3717eed779f
+    image: 192.168.1.4:23000/stephanvanlanduyt/cocktails-backend:1.0.20260506@sha256:7f52a0eac52f3aa4d3cc696f30b05d9a92e6947dc0607865362fa3717eed779f
     container_name: CocktailsApiDev
     environment:
-      - PG_DSN=postgresql+psycopg2://postgres:postgres@postgres_db:5432/cocktails
+      - PG_DSN=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres_db:5432/${POSTGRES_DB}
     ports:
       - 50802:8080
     depends_on:
@@ -30,8 +30,8 @@ services:
     container_name: CocktailsApacheDev
     restart: unless-stopped
     volumes:
-      - /portainer/Files/AppData/Config/Cocktails/frontend/apache/cocktails.conf:/usr/local/apache2/conf/extra/cocktails.conf
-      - /portainer/Files/AppData/Config/Cocktails/frontend/src:/usr/local/apache2/htdocs
+      - ${APACHE_CONFIG_PATH}:/usr/local/apache2/conf/extra/cocktails.conf
+      - ${APACHE_SRC_PATH}:/usr/local/apache2/htdocs
     command: httpd-foreground -c "Include conf/extra/cocktails.conf"
     depends_on:
       - python_app
