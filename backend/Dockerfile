@@ -8,7 +8,7 @@ ARG APP_BIND_PORT=8080
 ARG APP_BIND_HOST=0.0.0.0
 
 # Stage that prepares the virtualenv for the build and deploy
-FROM python:3.14.5 AS virtualenv_preparer
+FROM python:3.11.15 AS virtualenv_preparer
 
 ENV POETRY_VERSION=2.1.1
 
@@ -28,7 +28,7 @@ RUN poetry install --only main --no-root
 
 
 # Stage that prepares the deploy environment
-FROM python:3.14.5-slim AS predeploy
+FROM python:3.11.15-slim AS predeploy
 ARG PROJECT_DIR
 ARG VENV_DIR
 
