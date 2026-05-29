@@ -24,7 +24,7 @@ services:
       - postgres_db
 
   Apache:
-    image: 192.168.1.4:23000/stephanvanlanduyt/cocktails-frontend:1.0.20260528@sha256:a594c7622ab8c9e1c74bc486528f8a037189c09f38a58fe841c4521adaf3020a
+    image: 192.168.1.4:23000/stephanvanlanduyt/cocktails-frontend:1.0.20260529@sha256:2563cb3c99794a2d092208ad280c73a0486cf040d7d9e09b8c6cc03a916817c6
     ports:
       - 3333:80 
     container_name: CocktailsApache
