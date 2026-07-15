@@ -2,7 +2,7 @@ version: '3'
 
 services:
   postgres_db:
-    image: postgres:15.18@sha256:2e2c9831b5271ccc64e5cc8819ccfc3368a4c3e0d8afc74ca9da28b9b8d937b6
+    image: postgres:15.18@sha256:8b2bad884a8156e63d942305d0c547baa41f81953c93dbfc9e6cfe6f90bb8277
     container_name: CocktailsDBDev
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
