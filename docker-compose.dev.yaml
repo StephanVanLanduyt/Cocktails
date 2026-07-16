@@ -14,7 +14,7 @@ services:
       - ${POSTGRES_DATA_PATH}:/var/lib/postgresql/data/
 
   python_app:
-    image: 192.168.1.4:23000/stephanvanlanduyt/cocktails-backend:1.0.20260611@sha256:e3bd91a6cda9c8d3fa86be8439da49c32fc23c09b7b8a8b404d6514b6358b127
+    image: 192.168.1.4:23000/stephanvanlanduyt/cocktails-backend:1.0.20260716@sha256:e3323b564580adfb778045e21d285271568d8bba525857bfff09643ad2a694f7
     container_name: CocktailsApiDev
     environment:
       - PG_DSN=postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres_db:5432/${POSTGRES_DB}
