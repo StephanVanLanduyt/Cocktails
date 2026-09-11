@@ -13,7 +13,7 @@ services:
     volumes:
       - ${POSTGRES_DATA_PATH}:/var/lib/postgresql/data/
 
-  python-app:
+  cocktails-backend:
     image: 192.168.1.4:23000/stephanvanlanduyt/cocktails-backend:1.0.20260716@sha256:e3323b564580adfb778045e21d285271568d8bba525857bfff09643ad2a694f7
     container_name: CocktailsApi
     environment:
@@ -30,4 +30,4 @@ services:
     container_name: CocktailsApache
     restart: unless-stopped
     depends_on:
-      - python-app
+      - cocktails-backend
