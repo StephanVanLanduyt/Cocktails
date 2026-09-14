@@ -1,0 +1,124 @@
+name: Release
+
+on:
+  push:
+    branches: 
+      - master
+    paths:
+      - 'backend/**'
+      - '.forgejo/workflows/backend.yaml'
+
+
+jobs:
+  build:
+    name: Build Docker Image
+    runs-on: docker
+    permissions:
+      contents: read
+      packages: write
+    container:
+      env:
+        DOCKER_HOST: tcp://docker-in-docker:2375
+
+    outputs:
+      registry_host: ${{ steps.vars.outputs.registry_host }}
+      image_tag: ${{ steps.vars.outputs.image_tag }}
+      image_name: ${{ steps.vars.outputs.image_name }}
+
+    # Workflow environment variables
+    steps:
+      - name: Install Docker CLI
+        run: |
+          apt-get update && apt-get install -y ca-certificates curl
+          curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian bullseye stable" > /etc/apt/sources.list.d/docker.list
+          apt-get update && apt-get install -y docker-ce-cli
+    
+      - name: Checkout code
+        uses: actions/checkout@v7
+      
+      - name: Define Image variables
+        id: vars
+        run: |
+          REGISTRY_HOST=$(echo "${{ github.server_url }}" | sed -e 's|^[^/]*//||')
+          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          
+          IMAGE_NAME="$REGISTRY_HOST/$REPO_LOWER-backend"
+          TAG_DATE=$(date +%Y%m%d)
+          TAG="1.0.$TAG_DATE"
+
+          echo "Registry host: $REGISTRY_HOST" 
+          echo "registry_host=$REGISTRY_HOST" >> $GITHUB_OUTPUT
+          echo "Image Name: $IMAGE_NAME"
+          echo "image_name=$IMAGE_NAME" >> $GITHUB_OUTPUT
+          echo "Image Tag: $TAG"
+          echo "image_tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Build and Push
+        run: |
+          REGISTRY_HOST=${{ steps.vars.outputs.registry_host }}
+          echo "Logging into $REGISTRY_HOST..."
+          echo "${{ secrets.REGISTRY_TOKEN }}" | docker login "$REGISTRY_HOST" -u "${{ github.actor }}" --password-stdin
+          
+          IMAGE_NAME="${{ steps.vars.outputs.image_name }}"
+          TAG="${{ steps.vars.outputs.image_tag }}"
+
+          echo "Building Backend Docker Image: $IMAGE_NAME with tag $TAG"
+          docker build ./backend \
+            --file ./backend/Dockerfile \
+            --tag "$IMAGE_NAME:latest" \
+            --tag "$IMAGE_NAME:$TAG" \
+            --push
+
+  update-gitops:
+    name: Update GitOps Manifest
+    needs: build
+    runs-on: docker
+    steps:
+      - name: Install Git and yq
+        run: |
+          echo "Installing git and yq packages"
+          apt-get update && apt-get install -y git curl
+          curl -sL https://github.com/mikefarah/yq/releases/download/v4.44.1/yq_linux_amd64 -o /usr/bin/yq
+          chmod +x /usr/bin/yq
+
+      - name: Checkout GitOps Repo and Update Tag
+        env:
+          NEW_TAG: ${{ needs.build.outputs.image_tag }}
+          IMAGE_NAME: ${{ needs.build.outputs.image_name }}
+          REGISTRY_HOST: ${{ needs.build.outputs.registry_host }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          GIT_TOKEN: ${{ secrets.GITOPS_PUSH_TOKEN }}
+        run: |
+          echo "Configuring Git User"
+          git config --global user.name "Forgejo Actions Bot"
+          git config --global user.email "actions@homelab.local"
+
+          CLONE_URL="http://oauth2:${GIT_TOKEN}@${REGISTRY_HOST}/${REPO_OWNER}/kluster.git"
+          echo "Cloning Git Repository"
+          git clone "$CLONE_URL"
+          cd kluster
+
+          MANIFEST_PATH="apps/cocktails/manifests/backend.yaml"
+          echo "Checking manifest path ${MANIFEST_PATH}"
+
+          echo "Checking manifest path"
+          if [ ! -f "$MANIFEST_PATH" ]; then
+            echo "Error: Manifest file not found at $MANIFEST_PATH"
+            exit 1
+          fi
+
+          echo "Updating $MANIFEST_PATH image to $IMAGE_NAME:$NEW_TAG"
+          
+          # Safely update the image string using yq
+          yq -i '.spec.template.spec.containers[0].image = env(IMAGE_NAME) + ":" + env(NEW_TAG)' "$MANIFEST_PATH"
+
+          # Check if git diff has actual changes
+          if git diff --quiet; then
+            echo "No changes detected in manifest. Skipping commit."
+          else
+            git add "$MANIFEST_PATH"
+            git commit -m "chore(spotify): auto-update $IMAGE_NAME image tag to $NEW_TAG"
+            git push origin master
+            echo "Successfully pushed updated manifest to GitOps repo"
+          fi
