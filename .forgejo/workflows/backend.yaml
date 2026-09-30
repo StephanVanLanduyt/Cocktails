@@ -11,7 +11,7 @@ on:
 env:
   WORKING_DIR: "./backend"
   MANIFEST_PATH: 'apps/cocktails/manifests/backend.yaml'
-  IMAGE_YAML_PATH: '.spec.jobTemplate.spec.template.spec.containers[0].image'
+  IMAGE_YAML_PATH: '.spec.template.spec.containers[0].image'
   REGISTRY_HOST: 192.168.1.4:23000
   IMAGE_NAME: 192.168.1.4:23000/stephanvanlanduyt/cocktails-backend
   CLONE_URL: 192.168.1.4:23000/StephanVanLanduyt/kluster.git
@@ -25,7 +25,7 @@ jobs:
     steps:
       - name: Generate Dynamic Image Tag
         id: vars
-        run: echo "image_tag=1.0.$(date +%Y%m%d%H%M)" >> $GITHUB_OUTPUT
+        run: echo "image_tag=1.0.$(date +%Y%m%d)" >> $GITHUB_OUTPUT
 
   build:
     name: Build Docker Image
