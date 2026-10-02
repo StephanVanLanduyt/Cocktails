@@ -28,9 +28,16 @@ jobs:
         run: echo "image_tag=1.0.$(date +%Y%m%d)" >> $GITHUB_OUTPUT
 
   build:
-    name: Build Docker Image
+    name: Build Docker Image (${{ matrix.arch }})
     needs: setup
-    runs-on: docker
+    strategy:
+      matrix:
+        include:
+          - arch: amd64
+            runner: docker-amd64
+          - arch: arm64
+            runner: docker-arm64
+    runs-on: ${{ matrix.runner }}
     permissions:
       contents: read
       packages: write
@@ -45,12 +52,31 @@ jobs:
           registry_host: ${{ env.REGISTRY_HOST }}
           image_name: ${{ env.IMAGE_NAME }}
           image_tag: ${{ needs.setup.outputs.image_tag }}
+          architecture: ${{ matrix.arch }}
+          registry_username: ${{ github.actor }}
+          registry_token: ${{ secrets.REGISTRY_TOKEN }}
+
+  merge-manifest:
+    name: Create and Push Multi-Arch Manifest
+    needs: [setup, build]
+    runs-on: docker
+    container:
+      env:
+        DOCKER_HOST: tcp://docker-in-docker:2375
+    steps:
+      - name: Run Merge Manifest Template
+        uses: http://192.168.1.4:23000/StephanVanLanduyt/pipelines/merge-manifest@master
+        with:
+          registry_host: ${{ env.REGISTRY_HOST }}
+          image_name: ${{ env.IMAGE_NAME }}
+          image_tag: ${{ needs.setup.outputs.image_tag }}
+          architectures: "amd64 arm64"
           registry_username: ${{ github.actor }}
           registry_token: ${{ secrets.REGISTRY_TOKEN }}
 
   update-gitops:
     name: Update GitOps Manifest
-    needs: [setup, build]
+    needs: [setup, merge-manifest]
     runs-on: docker
     steps:
       - name: Run GitOps Template
