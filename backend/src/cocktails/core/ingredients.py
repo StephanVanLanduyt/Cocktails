@@ -103,6 +103,7 @@ class Ingredient(StrEnum):
     EGG_YOLK = "Egg Yolk"
     EGG = "Egg"
     HEAVY_CREAM = "Heavy Cream"
+    HALF_AND_HALF = "Half-and-Half"
     WORCESTERSHIRE_SAUCE = "Worcestershire Sauce"
     HORSERADISH = "Horseradish"
     GARLIC_POWDER = "Garlic Powder"
@@ -111,6 +112,7 @@ class Ingredient(StrEnum):
     PAPRIKA_POWDER = "Paprika Powder"
     CINNAMON = "Cinnamon"
     CLOVE = "Clove"
+    NUTMEG = "Nutmeg"
     OLIVE_BRINE = "Olive Brine"
     STILL_WATER = "Still Water"
     BOILING_WATER = "Boiling Water"
@@ -126,5 +128,6 @@ class Ingredient(StrEnum):
     GINGER_ALE = "Ginger Ale"
     ESPRESSO = "Espresso"
     DARK_CHOCOLATE = "Dark Chocolate"
+    WHOLE_MILK = "Whole Milk"
     SEMI_SKIMMED_MILK = "Semi-Skimmed Milk"
-    
+    SKIMMED_MILK = "Skimmed Milk"
